@@ -3,16 +3,19 @@ var fs = require('fs');
 
 var ClozeCard = function (text, cloze) {
     this.cloze = cloze;
-    this.partial = text.split(cloze).pop(); 
+    this.partial = function() {
+        var question = text.replace(cloze, " ... ");
+        return question;            
+    };
     this.fullText = text;
     this.createCard = function() {
-        if (!text.search(this.partial)) {
+        if (!text.search(this.partial())) {
             console.log("Error: Cloze deletion does not appear in input text");
             console.log('\n-----------------------\n')
         }
         else {
             console.log('Full Text: ' + this.fullText);
-            var newFlashcard = new BasicCard(this.partial, this.cloze);
+            var newFlashcard = new BasicCard(this.partial(), this.cloze);
             var object = {
                 table: []
             };
